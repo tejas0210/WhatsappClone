@@ -65,7 +65,7 @@ public class CreateAccount extends AppCompatActivity implements View.OnClickList
                             }
                         }
                     });
-
+                    dialog.dismiss();
                 }
                 catch (Exception e){
                     Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
