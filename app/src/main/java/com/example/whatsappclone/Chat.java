@@ -2,6 +2,7 @@ package com.example.whatsappclone;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ public class Chat extends AppCompatActivity{
         final ArrayList<String> wUsers = new ArrayList<>();
         final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,wUsers);
 
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
         try{
             ParseQuery<ParseUser> parseQuery = ParseUser.getQuery();
             parseQuery.whereNotEqualTo("username",ParseUser.getCurrentUser().getUsername());
@@ -51,8 +54,42 @@ public class Chat extends AppCompatActivity{
 
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                try{
+                    ParseQuery<ParseUser> parseQuery = ParseUser.getQuery();
+                    parseQuery.whereNotEqualTo("username",ParseUser.getCurrentUser().getUsername());
+                    parseQuery.whereNotContainedIn("username",wUsers);
+                    parseQuery.findInBackground(new FindCallback<ParseUser>() {
+                        @Override
+                        public void done(List<ParseUser> objects, ParseException e) {
+                            if(objects.size()>0 && e==null){
+                                for(ParseUser user: objects){
+                                    wUsers.add(user.getUsername());
+                                }
+                                arrayAdapter.notifyDataSetChanged();
+                                if(swipeRefreshLayout.isRefreshing()){
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                            else{
+                                if(swipeRefreshLayout.isRefreshing()){
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    });
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     @Override
