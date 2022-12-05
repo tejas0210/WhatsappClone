@@ -17,7 +17,7 @@ import com.parse.SignUpCallback;
 
 public class CreateAccount extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText edtName, edtSPhone, edtSPassword;
+    private EditText edtName, edtSUsername, edtSPassword;
     private TextView txtLogin;
     private Button btnConnect;
 
@@ -28,7 +28,7 @@ public class CreateAccount extends AppCompatActivity implements View.OnClickList
         setTitle("Create account");
 
         edtName = findViewById(R.id.edtName);
-        edtSPhone = findViewById(R.id.edtSPhone);
+        edtSUsername = findViewById(R.id.edtSUsername);
         edtSPassword = findViewById(R.id.edtSPassword);
         txtLogin = findViewById(R.id.txtLogin);
         btnConnect = findViewById(R.id.btnConnect);
@@ -47,7 +47,7 @@ public class CreateAccount extends AppCompatActivity implements View.OnClickList
             case R.id.btnConnect:
                 try {
                     final ParseUser user = new ParseUser();
-                    user.setUsername(edtSPhone.getText().toString());
+                    user.setUsername(edtSUsername.getText().toString());
                     user.setPassword(edtSPassword.getText().toString());
 
                     final ProgressDialog dialog = new ProgressDialog(CreateAccount.this);

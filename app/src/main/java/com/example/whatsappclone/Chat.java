@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -21,19 +22,22 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chat extends AppCompatActivity{
-
+public class Chat extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    private ArrayList<String> wUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         final ListView listView = findViewById(R.id.listView);
-        final ArrayList<String> wUsers = new ArrayList<>();
+        wUsers = new ArrayList<>();
         final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,wUsers);
+
+        listView.setOnItemClickListener(this);
 
         final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
@@ -114,5 +118,12 @@ public class Chat extends AppCompatActivity{
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Intent intent = new Intent(Chat.this,UserChat.class);
+        intent.putExtra("selectedUser",wUsers.get(position));
+        startActivity(intent);
     }
 }

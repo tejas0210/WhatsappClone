@@ -15,7 +15,7 @@ import com.parse.ParseUser;
 
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText edtPhone, edtPassword;
+    private EditText edtUsername, edtPassword;
     private Button btnLogIn, btnCreateAccount;
 
     @Override
@@ -23,7 +23,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        edtPhone = findViewById(R.id.edtPhone);
+        edtUsername = findViewById(R.id.edtUsername);
         edtPassword = findViewById(R.id.edtPassword);
 
         btnLogIn = findViewById(R.id.btnLogIn);
@@ -42,7 +42,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         switch (btnPressed.getId()){
             case R.id.btnLogIn:
                 try {
-                    ParseUser.logInInBackground(edtPhone.getText().toString(), edtPassword.getText().toString(), new LogInCallback() {
+                    ParseUser.logInInBackground(edtUsername.getText().toString(), edtPassword.getText().toString(), new LogInCallback() {
                         @Override
                         public void done(ParseUser user, ParseException e) {
                             if(user!=null && e==null){
